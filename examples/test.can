@@ -1,0 +1,4 @@
+X = { x in Z : x > 0 }
+
+print(3 in X)
+print(-1 in X)
