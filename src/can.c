@@ -2,6 +2,7 @@
 #include "include/lexer.h"
 #include "include/parser.h"
 #include "include/io.h"
+#include "include/token.h"
 #include <stdlib.h>
 
 void compile_can(char* src)
@@ -13,7 +14,7 @@ void compile_can(char* src)
     token_T* token = 0;
     while ((token = lexer_next_token(lexer))->type != TOKEN_EOF)
     {
-        printf("TOKEN(%s) (%d)\n", token->value, token->type);
+        printf("<%s> value:`%s`, type: %d\n", get_token_string(token), token->value, token->type);
     }
 }
 
