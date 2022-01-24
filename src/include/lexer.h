@@ -21,6 +21,13 @@ void lexer_skip_whitespace(lexer_T* lexer);
 
 token_T* lexer_parse_id(lexer_T* lexer);
 
+token_T* lexer_parse_number(lexer_T* lexer);
+
+/* @brief Given the lexer, get next language token and advance the lexer
+ *
+ * @param lexer
+ * @return token
+ */
 token_T* lexer_next_token(lexer_T* lexer);
 #endif
 

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdio.h>
 
 lexer_T* init_lexer(char* src)
 {
@@ -41,20 +42,59 @@ token_T* lexer_parse_id(lexer_T* lexer)
     while (isalpha(lexer->c))
     {
         value = realloc(value, (strlen(value) + 2) * sizeof(char));
-        strcat(value, (char[]){lexer->c, 0});
+        strcat(value, (char[]) {lexer->c, 0});
         lexer_advance(lexer);
     }
 
     return init_token(value, TOKEN_ID);
 }
 
+token_T* lexer_parse_number(lexer_T* lexer) 
+{
+    char* value = calloc(1, sizeof(char));
+    while (isdigit(lexer->c))
+    {
+        value = realloc(value, (strlen(value) + 2) * sizeof(char));
+        strcat(value, (char[]) {lexer->c, 0});
+        lexer_advance(lexer);
+    }
+
+    return init_token(value, TOKEN_INT);
+}
+
+/* @brief Given the lexer, get next language token and advance the lexer
+ *
+ * @param lexer
+ * @return token
+ */
 token_T* lexer_next_token(lexer_T* lexer)
 {
     while (lexer->c != '\0')
     {
+        lexer_skip_whitespace(lexer);
+
         if (isalpha(lexer->c))
-            return lexer_advance_with(lexer, lexer_parse_id(lexer));
+            return lexer_parse_id(lexer);
+
+        if (isdigit(lexer->c))
+            return lexer_parse_number(lexer);
+
+        switch (lexer->c)
+        {
+            case '=': return lexer_advance_with(lexer, init_token("=", TOKEN_EQ));
+            case '(': return lexer_advance_with(lexer, init_token("(", TOKEN_LPAREN));
+            case ')': return lexer_advance_with(lexer, init_token(")", TOKEN_RPAREN));
+            case '{': return lexer_advance_with(lexer, init_token("{", TOKEN_LBRACE));
+            case '}': return lexer_advance_with(lexer, init_token("}", TOKEN_LBRACE));
+            // 'in'
+            case ':': return lexer_advance_with(lexer, init_token(":", TOKEN_COLON));
+            case '<': return lexer_advance_with(lexer, init_token("<", TOKEN_LT));
+            case '>': return lexer_advance_with(lexer, init_token(">", TOKEN_GT));
+            case '\0': break;
+            default: printf("[lexer]: Unexpected character: `%c`\n", lexer->c); exit(1); break;
+        }
     }
+
 
     return init_token(0, TOKEN_EOF);
 }

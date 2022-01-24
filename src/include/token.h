@@ -6,14 +6,16 @@ typedef struct TOKEN_STRUCT
     enum
     {
         TOKEN_ID,
-        TOKEN_EQUALS,
-        TOKEN_L_BRACE,
-        TOKEN_R_BRACE,
+        TOKEN_INT,
+        TOKEN_EQ,
+        TOKEN_LPAREN,
+        TOKEN_RPAREN,
+        TOKEN_LBRACE,
+        TOKEN_RBRACE,
         TOKEN_IN,
         TOKEN_COLON,
-        TOKEN_L_THAN,
-        TOKEN_G_THAN,
-        TOKEN_INT,
+        TOKEN_LT,
+        TOKEN_GT,
         TOKEN_EOF
     } type;
 } token_T;
